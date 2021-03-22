@@ -1,6 +1,7 @@
 package ru.startandroid.kinopoiskapp2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,14 @@ public class MoviesAdapterHor extends RecyclerView.Adapter<MoviesAdapterHor.View
                 .load(PHOTO_URL + movie.getPoster())
                 .resize(500,700)
                 .into(holder.posterImageView);
+
+        holder.posterImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CardOfMovie.class).putExtra("movieId", movie.getMovieId());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

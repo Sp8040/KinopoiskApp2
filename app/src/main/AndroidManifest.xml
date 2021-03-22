@@ -14,11 +14,10 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".CardOfMovie" />
-        <activity android:name=".MainActivityOne" />
         <activity android:name=".SignUp" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".LoadingScreen" />
         <activity android:name=".SignIn" />
-        <activity android:name=".LoadingScreen">
+        <activity android:name=".MainActivityOne">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

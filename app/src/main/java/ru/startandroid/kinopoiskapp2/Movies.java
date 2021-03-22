@@ -5,9 +5,17 @@ import java.util.List;
 public class Movies {
 
     private int movieId;
-    private String name, description, age, poster;
+    private String name, description, age, poster, preview;
     String[] images;
     private List<Tags> tag;
+
+    public String getPreview() {
+        return preview;
+    }
+
+    public void setPreview(String preview) {
+        this.preview = preview;
+    }
 
     public int getMovieId() {
         return movieId;
