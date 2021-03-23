@@ -17,8 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,11 +31,20 @@ import retrofit2.Response;
 import ru.startandroid.kinopoiskapp2.ApiClient;
 import ru.startandroid.kinopoiskapp2.CardOfMovie;
 import ru.startandroid.kinopoiskapp2.Movies;
+import ru.startandroid.kinopoiskapp2.MoviesAdapter;
+import ru.startandroid.kinopoiskapp2.MoviesAdapterHor;
 import ru.startandroid.kinopoiskapp2.R;
+import ru.startandroid.kinopoiskapp2.ui.home.HomeViewModel;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
+    private HomeViewModel homeViewModel;
+
+    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerViewHor;
+
+    List<Movies> mMovies;
 
     TextView movieName;
     ImageView moviePoster;
@@ -52,46 +66,33 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        movieName = root.findViewById(R.id.tvLastMovieName);
-        moviePoster = root.findViewById(R.id.tvLastMoviePoster);
-        mSettings = getContext().getApplicationContext().getSharedPreferences("MoviePrefs", Context.MODE_PRIVATE);
+        mMovies = new ArrayList<>();
+
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.rvMainTrendMovies);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        MoviesAdapter moviesAdapter = new MoviesAdapter(mMovies);
+        mRecyclerView.setAdapter(moviesAdapter);
 
 
-        id = mSettings.getInt("idMovie", 0);
-
-        Call<Movies> call = ApiClient.getService().getMovieDate(id);
-
-        call.enqueue(new Callback<Movies>() {
+        final Call<List<Movies>> call = ApiClient.getService().getMovieTrend();
+        call.enqueue(new Callback<List<Movies>>() {
             @Override
-            public void onResponse(Call<Movies> call, Response<Movies> response) {
-                if(response.isSuccessful()){
-                    Movies movie = response.body();
-                    movieName.setText(movie.getName());
-
-                    Picasso.with(getContext())
-                            .load(PHOTO_URL + movie.getPoster())
-                            .resize(500,700)
-                            .into(moviePoster);
-
-                }
-                else{
-                    Toast.makeText(getContext(), response.errorBody().toString(), Toast.LENGTH_LONG ).show();
+            public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
+                if (response.isSuccessful()) {
+                    mMovies.addAll(response.body());
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), response.errorBody().toString(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Movies> call, Throwable t) {
-
+            public void onFailure(Call<List<Movies>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
-        moviePoster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CardOfMovie.class).putExtra("movieId", id);
-                getContext().startActivity(intent);
-            }
-        });
         return root;
     }
 }

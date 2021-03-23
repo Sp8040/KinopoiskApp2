@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">KinopoiskApp2</string>
     <string name="title_activity_main_one">MainActivityOne</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Новинки</string>
+    <string name="title_dashboard">В тренде</string>
+    <string name="title_notifications">История</string>
 </resources>

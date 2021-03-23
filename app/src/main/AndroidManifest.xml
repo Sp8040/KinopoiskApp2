@@ -15,9 +15,9 @@
 
         <activity android:name=".CardOfMovie" />
         <activity android:name=".SignUp" />
-        <activity android:name=".LoadingScreen" />
+        <activity android:name=".MainActivityOne" />
         <activity android:name=".SignIn" />
-        <activity android:name=".MainActivityOne">
+        <activity android:name=".LoadingScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -19,6 +19,9 @@ public interface ApiService {
     @GET("movies?filter=new")
     Call<List<Movies>> getMovie();
 
+    @GET("movies?filter=inTrend")
+    Call<List<Movies>> getMovieTrend();
+
     @GET("movies/{movieId}")
     Call<Movies> getMovieDate(@Path("movieId") int movieId);
 
